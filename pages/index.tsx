@@ -1,6 +1,9 @@
 import { Button } from "@nextui-org/react";
 import type { NextPage, GetStaticProps } from "next";
+
 import { Layout } from "../components/layouts";
+import { pokeApi } from "../api";
+import { PokemonListResponse } from "../interfaces";
 
 const Home: NextPage = (props) => {
   console.log("🚀 ~ file: index.tsx ~ line 6 ~ props", props);
@@ -12,11 +15,11 @@ const Home: NextPage = (props) => {
 };
 
 export const getStaticProps: GetStaticProps = async (ctx) => {
-  console.log("first");
+  const { data } = await pokeApi.get<PokemonListResponse>("/pokemon?limit=151");
 
   return {
     props: {
-      name: "carlos",
+      pokemons: data.results,
     },
   };
 };
