@@ -1,41 +1,44 @@
+import { FC } from "react";
 import { GetStaticPaths, GetStaticProps } from "next";
-import { useRouter } from "next/router";
 
 import { Layout } from "../../components/layouts";
+import { Pokemon } from "../../interfaces";
+import { pokeApi } from "../../api";
 
-const PokemonPage = () => {
-  const router = useRouter();
-  console.log(
-    "🚀 ~ file: [id].tsx ~ line 6 ~ PokemonPage ~ router",
-    router.query
-  );
+interface Props {
+  pokemon: Pokemon;
+}
+
+const PokemonPage: FC<Props> = ({ pokemon }) => {
   return (
     <Layout title="Poke info">
-      <h1>Hello Pokemon</h1>
+      <h1>{pokemon.name}</h1>
     </Layout>
   );
 };
 
 export const getStaticPaths: GetStaticPaths = async (ctx) => {
-  // const { data } = await  // your fetch function here
+  const allPokemons = [...Array(151)].map((_, index) => `${index + 1}`);
 
   return {
-    paths: [
-      {
-        params: {
-          id: "1",
-        },
+    paths: allPokemons.map((id) => ({
+      params: {
+        id,
       },
-    ],
+    })),
     fallback: false,
   };
 };
 
-export const getStaticProps: GetStaticProps = async (ctx) => {
-  // const { data } = await  // your fetch function here
+export const getStaticProps: GetStaticProps = async ({ params }) => {
+  const { id } = params as { id: string };
+
+  const { data } = await pokeApi.get<Pokemon>(`/pokemon/${id}`);
 
   return {
-    props: {},
+    props: {
+      pokemon: data,
+    },
   };
 };
 
