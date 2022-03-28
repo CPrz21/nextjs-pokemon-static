@@ -4,6 +4,7 @@ import { NextPage } from "next";
 import { Layout } from "../../components/layouts";
 import { FavoritesEmpty } from "../../components/ui/FavoritesEmpty";
 import { localFavorites } from "../../utils";
+import { Card, Grid } from "@nextui-org/react";
 
 const FavoritesPage: NextPage = () => {
   const [favoritePokemons, setFavoritePokemons] = useState<number[]>([]);
@@ -15,7 +16,19 @@ const FavoritesPage: NextPage = () => {
   return (
     <Layout title="Favorite Pokemons">
       {favoritePokemons.length > 0 ? (
-        <h1>Si hay pokemosn</h1>
+        <Grid.Container gap={2} direction="row" justify="flex-start">
+          {favoritePokemons.map((id) => (
+            <Grid xs={6} sm={3} md={2} xl={1} key={id}>
+              <Card hoverable clickable css={{ padding: 10 }}>
+                <Card.Image
+                  src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/${id}.svg`}
+                  width="100%"
+                  height={140}
+                />
+              </Card>
+            </Grid>
+          ))}
+        </Grid.Container>
       ) : (
         <FavoritesEmpty />
       )}
