@@ -11,7 +11,6 @@ interface Props {
 }
 
 const Home: NextPage<Props> = ({ pokemons }) => {
-  console.log("🚀 ~ file: index.tsx ~ line 6 ~ pokemons", pokemons);
   return (
     <Layout title="Pokemon List">
       <Grid.Container gap={2} justify="flex-start">
